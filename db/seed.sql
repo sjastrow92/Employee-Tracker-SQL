@@ -1,4 +1,5 @@
 -- Connect to the database
+const db = require("../schema.sql");
 \c employees
 
 INSERT INTO department
