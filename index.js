@@ -84,18 +84,11 @@ function loadMainPrompts() {
 // TODO- Create a function to View all employees
 
 function viewAllEmployees() {
-  const query = `
-    SELECT e.id, e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
-    LEFT JOIN roles r ON e.role_id = r.id
-    LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;
-    `;
-  db.query(query, (err, res) => {
+  db.findAllEmployees().then((err, res) => {
     if (err) throw err;
     console.table(res);
     // restart the application
-    start();
+    loadMainPrompts();
   });
 }
 
@@ -106,17 +99,57 @@ function viewAllEmployees() {
 // BONUS- Create a function to Delete an employee
 
 // TODO- Create a function to Update an employee's role
+function updateEmployeeRole() {
+  db.viewAllRoles().then((err, res) => {
+    if (err) throw err;
+    console.table(res);
+    // restart the application
+    loadMainPrompts();
+  });
+}
 
 // BONUS- Create a function to Update an employee's manager
 
 // TODO- Create a function to View all roles
-
+function viewAllRoles() {
+  db.viewAllRoles().then((err, res) => {
+    if (err) throw err;
+    console.table(res);
+    // restart the application
+    loadMainPrompts();
+  });
+}
 // TODO- Create a function to Add a role
-
+function addRole() {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "name",
+      message: "Enter the name of the new department:",
+    })
+    .then((answer) => {
+      console.log(answer.name);
+      const query = `INSERT INTO  (role_name) VALUES ("${answer.name}")`;
+      db.query(query, (err, res) => {
+        if (err) throw err;
+        console.log(`Added role ${answer.name} to the database!`);
+        // restart the application
+        loadMainPrompts();
+        console.log(answer.name);
+      });
+    });
+}
 // BONUS- Create a function to Delete a role
 
 // TODO- Create a function to View all deparments
-
+function viewAllDepartments() {
+  db.findAllDepartments().then((err, res) => {
+    if (err) throw err;
+    console.table(res);
+    // restart the application
+    loadMainPrompts();
+  });
+}
 // TODO- Create a function to Add a department
 function addDepartment() {
   inquirer
@@ -132,7 +165,7 @@ function addDepartment() {
         if (err) throw err;
         console.log(`Added department ${answer.name} to the database!`);
         // restart the application
-        start();
+        loadMainPrompts();
         console.log(answer.name);
       });
     });
@@ -143,7 +176,25 @@ function addDepartment() {
 // BONUS- Create a function to View all departments and show their total utilized department budget
 
 // TODO- Create a function to Add an employee
-
+function addEmployee() {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "name",
+      message: "Enter the name of the new employee:",
+    })
+    .then((answer) => {
+      console.log(answer.name);
+      const query = `INSERT INTO employee (employee_name) VALUES ("${answer.name}")`;
+      db.query(query, (err, res) => {
+        if (err) throw err;
+        console.log(`Added employee ${answer.name} to the database!`);
+        // restart the application
+        loadMainPrompts();
+        console.log(answer.name);
+      });
+    });
+}
 // Exit the application
 function quit() {
   console.log("Goodbye!");
