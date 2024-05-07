@@ -21,10 +21,11 @@ class DB {
   // TODO- Create a query to Find all employees except the given employee id
 
   // TODO- Create a query to Create a new employee
-  const employee = {
-  text: 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)',
-  values: [firstName, lastName, roleId, managerId],
-};
+
+  //   const newEmployee = {
+  //   text: 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)',
+  //   values: [firstName, lastName, roleId, managerId],
+  // };
 
   // BONUS- Create a query to Remove an employee with the given id
 
