@@ -128,24 +128,41 @@ function viewAllRoles() {
 }
 // TODO- Create a function to Add a role
 function addRole() {
-  inquirer
-    .prompt({
+  db.findAllDepartments().then(({rows})=>{
+    const departments = rows.map(({id, name})=>({
+      name: name,
+      value: id
+    }))
+inquirer
+    .prompt([
+      {
       type: "input",
-      name: "name",
-      message: "Enter the name of the new department:",
-    })
-    .then((answer) => {
-      console.log(answer.name);
-      const query = `INSERT INTO  (role_name) VALUES ("${answer.name}")`;
-      db.query(query, (err, res) => {
-        if (err) throw err;
-        console.log(`Added role ${answer.name} to the database!`);
+      name: "title",
+      message: "Enter the name of the new role"
+    },
+ {
+      type: "input",
+      name: "salary",
+      message: "Enter the salary of the new role"
+    },
+     {
+      type: "list",
+      name: "department_id",
+      message: "Choose the department",
+      choices: departments
+    }
+    
+    ])
+    .then(({title, salary, department_id}) => {
+      db.createNewRole(title, salary, department_id).then(()=>{
+console.log(`Added role ${title} to the database!`);
         // restart the application
         loadMainPrompts();
-        console.log(answer.name);
+      })
       });
-    });
-}
+  })
+  
+    }
 // BONUS- Create a function to Delete a role
 
 // TODO- Create a function to View all deparments

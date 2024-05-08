@@ -56,9 +56,9 @@ findAllRoles() {
     );
   }
   // TODO- Create a query to Create a new role
-createNewRole(name) {
+createNewRole(title, salary, department_id) {
     return this.query(
-   'INSERT INTO role (name) VALUES ($2)', [name]
+   'INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)', [title, salary, department_id]
     );
   }
   // BONUS- Create a query to Remove a role from the db
