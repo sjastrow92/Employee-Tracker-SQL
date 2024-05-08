@@ -1,22 +1,22 @@
 -- Drop the database if it exists
-DROP DATABASE IF EXISTS employees;
+DROP DATABASE IF EXISTS employees_db;
 
 -- Create the new database
-CREATE DATABASE employees;
+CREATE DATABASE employees_db;
 
 -- Connect to the database
-\c employees
+\c employees_db
 
 -- TODO- write an SQL command to Create the department table
 CREATE TABLE department (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30) NOT NULL
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
 );
 
 -- TODO- write an SQL command to Create the role table
 CREATE TABLE role (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(30),
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(100),
   salary DECIMAL,
   department_id INT,
   FOREIGN KEY (department_id)
@@ -26,9 +26,9 @@ CREATE TABLE role (
 
 -- TODO- write an SQL command to Create the employee table
 CREATE TABLE employee (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(30),
-  last_name VARCHAR(30),
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
   role_id INT,
   manager_id INT,
   FOREIGN KEY (role_id)

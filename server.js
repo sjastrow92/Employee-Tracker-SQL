@@ -1,4 +1,4 @@
-const { prompt } = require("inquirer");
+const inquirer = require("inquirer");
 const logo = require("asciiart-logo");
 const db = require("./db");
 
@@ -14,7 +14,7 @@ function init() {
 }
 // TODO- Create first question user will see- "What would you like to do?"
 function loadMainPrompts() {
-  prompt([
+  inquirer.prompt([
     {
       type: "list",
       name: "action",
@@ -84,12 +84,18 @@ function loadMainPrompts() {
 // TODO- Create a function to View all employees
 
 function viewAllEmployees() {
-  db.findAllEmployees().then((err, res) => {
+ /* db.findAllEmployees().then((err, res) => {
     if (err) throw err;
     console.table(res);
     // restart the application
     loadMainPrompts();
-  });
+  });*/
+
+  db.findAllEmployees().then(({ rows }) => {
+    let emp = rows;
+    console.table(emp);
+  })
+  .then(() => loadMainPrompts());
 }
 
 // BONUS- Create a function to View all employees that belong to a department
@@ -100,9 +106,9 @@ function viewAllEmployees() {
 
 // TODO- Create a function to Update an employee's role
 function updateEmployeeRole() {
-  db.viewAllRoles().then((err, res) => {
-    if (err) throw err;
-    console.table(res);
+  db.updateEmployeeRole().then(({rows}) => {
+    // if (err) throw err;
+    console.table(roles);
     // restart the application
     loadMainPrompts();
   });
@@ -112,9 +118,10 @@ function updateEmployeeRole() {
 
 // TODO- Create a function to View all roles
 function viewAllRoles() {
-  db.viewAllRoles().then((err, res) => {
-    if (err) throw err;
-    console.table(res);
+  db.findAllRoles().then(({rows}) => {
+    //if (err) throw err;
+    let roles = rows;
+    console.table(roles);
     // restart the application
     loadMainPrompts();
   });
@@ -143,9 +150,10 @@ function addRole() {
 
 // TODO- Create a function to View all deparments
 function viewAllDepartments() {
-  db.findAllDepartments().then((err, res) => {
-    if (err) throw err;
-    console.table(res);
+  db.findAllDepartments().then(({rows}) => {
+    //if (err) throw err;
+    let dept = rows;
+    console.table(dept);
     // restart the application
     loadMainPrompts();
   });
@@ -159,7 +167,7 @@ function addDepartment() {
       message: "Enter the name of the new department:",
     })
     .then((answer) => {
-      console.log(answer.name);
+      /*console.log(answer.name);
       const query = `INSERT INTO departments (department_name) VALUES ("${answer.name}")`;
       db.query(query, (err, res) => {
         if (err) throw err;
@@ -167,7 +175,12 @@ function addDepartment() {
         // restart the application
         loadMainPrompts();
         console.log(answer.name);
-      });
+      });*/
+      db.createNewDepartment(answer.name)
+      .then(() => {
+        console.log("Department Added");
+        loadMainPrompts();
+      })
     });
 }
 

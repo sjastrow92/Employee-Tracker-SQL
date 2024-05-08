@@ -1,6 +1,6 @@
 -- Connect to the database
 const db = require("../schema.sql");
-\c employees
+\c employees_db
 
 INSERT INTO department
     (name)

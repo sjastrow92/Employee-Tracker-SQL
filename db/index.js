@@ -17,27 +17,21 @@ class DB {
   findAllEmployees() {
     return this.query(
       `
-    SELECT e.id, e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
-    LEFT JOIN roles r ON e.role_id = r.id
-    LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;
+    SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id
+    LEFT JOIN employee manager ON manager.id = employee.manager_id;
     `
     );
   }
 
   // TODO- Create a query to Find all employees except the given employee id
-findAllEmployees() {
+/*findAllEmployees() {
     return this.query(
-      `
-    SELECT e.id, e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
-    LEFT JOIN roles r ON e.role_id = r.id
-    LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;
-    `
+     
     );
-  }
+  }*/
   // TODO- Create a query to Create a new employee
 createNewEmployee() {
     return this.query(
@@ -47,9 +41,9 @@ createNewEmployee() {
   // BONUS- Create a query to Remove an employee with the given id
 
   // TODO- Create a query to Update the given employee's role
-updateEmployeeRole() {
+updateEmployeeRole(name) {
     return this.query(
-    
+    'INSERT INTO role (name) VALUES ($2)', [name]
     );
   }
   // BONUS- Create a query to Update the given employee's manager
@@ -57,13 +51,14 @@ updateEmployeeRole() {
   // TODO- Create a query to Find all roles, join with departments to display the department name
 findAllRoles() {
     return this.query(
+      'SELECT role.id, role.title, role.salary FROM role LEFT JOIN department on role.department_id = department.id;'
     
     );
   }
   // TODO- Create a query to Create a new role
-createNewRole() {
+createNewRole(name) {
     return this.query(
-   
+   'INSERT INTO role (name) VALUES ($2)', [name]
     );
   }
   // BONUS- Create a query to Remove a role from the db
@@ -71,15 +66,15 @@ createNewRole() {
   // TODO- Create a query to Find all departments
 findAllDepartments() {
     return this.query(
-   
+      'SELECT * from department;'
     );
   }
   // BONUS- Create a query to Find all departments, join with employees and roles and sum up utilized department budget
 
   // TODO- Create a query to Create a new department
-createNewDepartment() {
+createNewDepartment(name) {
     return this.query(
-    
+      'INSERT INTO department (name) VALUES ($1)', [name]
     );
   }
   // BONUS- Create a query to Remove a department
