@@ -189,6 +189,7 @@ function addEmployee() {
    db.findAllEmployees().then(({ rows }) => { // gets all employees
     const managers = rows; // stores full return of employees to the managers variable
     const managerChoices = managers.map(({ id, first_name, last_name }) => ({ // takes the managers array and maps through it to create the choices for prompt
+      
       name: `${first_name} ${last_name}`, //sets the employees first_name and last_name as what displays in the choice
       value: id // sets the employees id as the value that gets sent when selected
    }));// ends the maping of array
@@ -212,18 +213,20 @@ function addEmployee() {
       type: "list",
       name: "role_id",
       message: "Enter the role of the new employee:",
+
     },
     // manager id. list. look at cody example
     {
       type: "list",
       name: "manager_id",
-      message: "Enter the role of the new employee:",
+      message: "Enter the manager of the new employee:",
+      choices: managerChoices
     }
     ])
     .then((answer) => {
-      db.createNewEmployee(answer.name)
+      db.createNewEmployee(answer.first_name, answer.last_name, answer.role_id, answer,manager_id)
       .then(()=> {
-        console.log(`Added employee ${answer.name} to the database!`);
+        console.log(`Added employee ${answer.first_name} ${answer.first_last} to the database!`);
         // restart the application
         loadMainPrompts();
       });
