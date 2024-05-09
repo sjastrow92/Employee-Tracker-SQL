@@ -84,13 +84,6 @@ function loadMainPrompts() {
 // TODO- Create a function to View all employees
 
 function viewAllEmployees() {
- /* db.findAllEmployees().then((err, res) => {
-    if (err) throw err;
-    console.table(res);
-    // restart the application
-    loadMainPrompts();
-  });*/
-
   db.findAllEmployees().then(({ rows }) => {
     let emp = rows;
     console.table(emp);
@@ -163,14 +156,12 @@ console.log(`Added role ${title} to the database!`);
   })
   
     }
-// BONUS- Create a function to Delete a role
-
 // TODO- Create a function to View all deparments
 function viewAllDepartments() {
   db.findAllDepartments().then(({rows}) => {
     //if (err) throw err;
     let dept = rows;
-    console.table(dept);
+    console.table(rows);
     // restart the application
     loadMainPrompts();
   });
@@ -184,15 +175,7 @@ function addDepartment() {
       message: "Enter the name of the new department:",
     })
     .then((answer) => {
-      /*console.log(answer.name);
-      const query = `INSERT INTO departments (department_name) VALUES ("${answer.name}")`;
-      db.query(query, (err, res) => {
-        if (err) throw err;
-        console.log(`Added department ${answer.name} to the database!`);
-        // restart the application
-        loadMainPrompts();
-        console.log(answer.name);
-      });*/
+     
       db.createNewDepartment(answer.name)
       .then(() => {
         console.log("Department Added");
@@ -200,31 +183,53 @@ function addDepartment() {
       })
     });
 }
-
-// BONUS- Create a function to Delete a department
-
-// BONUS- Create a function to View all departments and show their total utilized department budget
-
 // TODO- Create a function to Add an employee
 function addEmployee() {
+  // cody example code
+   db.findAllEmployees().then(({ rows }) => { // gets all employees
+    const managers = rows; // stores full return of employees to the managers variable
+    const managerChoices = managers.map(({ id, first_name, last_name }) => ({ // takes the managers array and maps through it to create the choices for prompt
+      name: `${first_name} ${last_name}`, //sets the employees first_name and last_name as what displays in the choice
+      value: id // sets the employees id as the value that gets sent when selected
+   }));// ends the maping of array
+
+
   inquirer
-    .prompt({
+    .prompt([
+    {
       type: "input",
-      name: "name",
-      message: "Enter the name of the new employee:",
-    })
+      name: "first_name",
+      message: "Enter the first name of the new employee:",
+    },
+    // last name
+    {
+      type: "input",
+      name: "last_name",
+      message: "Enter the last name of the new employee:",
+    },
+    //role id. list. look at cody example
+    {
+      type: "list",
+      name: "role_id",
+      message: "Enter the role of the new employee:",
+    },
+    // manager id. list. look at cody example
+    {
+      type: "list",
+      name: "manager_id",
+      message: "Enter the role of the new employee:",
+    }
+    ])
     .then((answer) => {
-      console.log(answer.name);
-      const query = `INSERT INTO employee (employee_name) VALUES ("${answer.name}")`;
-      db.query(query, (err, res) => {
-        if (err) throw err;
+      db.createNewEmployee(answer.name)
+      .then(()=> {
         console.log(`Added employee ${answer.name} to the database!`);
         // restart the application
         loadMainPrompts();
-        console.log(answer.name);
       });
     });
-}
+   })}
+
 // Exit the application
 function quit() {
   console.log("Goodbye!");

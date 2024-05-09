@@ -33,12 +33,11 @@ class DB {
     );
   }*/
   // TODO- Create a query to Create a new employee
-createNewEmployee() {
+createNewEmployee(first_name, last_name, role_id, manager_id) {
     return this.query(
-    
+    'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)', [first_name, last_name, role_id, manager_id]
     );
   }
-  // BONUS- Create a query to Remove an employee with the given id
 
   // TODO- Create a query to Update the given employee's role
 updateEmployeeRole(name) {
@@ -46,13 +45,11 @@ updateEmployeeRole(name) {
     'INSERT INTO role (name) VALUES ($2)', [name]
     );
   }
-  // BONUS- Create a query to Update the given employee's manager
 
   // TODO- Create a query to Find all roles, join with departments to display the department name
 findAllRoles() {
     return this.query(
       'SELECT role.id, role.title, role.salary FROM role LEFT JOIN department on role.department_id = department.id;'
-    
     );
   }
   // TODO- Create a query to Create a new role
@@ -61,7 +58,6 @@ createNewRole(title, salary, department_id) {
    'INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)', [title, salary, department_id]
     );
   }
-  // BONUS- Create a query to Remove a role from the db
 
   // TODO- Create a query to Find all departments
 findAllDepartments() {
@@ -69,7 +65,6 @@ findAllDepartments() {
       'SELECT * from department;'
     );
   }
-  // BONUS- Create a query to Find all departments, join with employees and roles and sum up utilized department budget
 
   // TODO- Create a query to Create a new department
 createNewDepartment(name) {
@@ -77,11 +72,8 @@ createNewDepartment(name) {
       'INSERT INTO department (name) VALUES ($1)', [name]
     );
   }
-  // BONUS- Create a query to Remove a department
+  
 
-  // BONUS- Create a query to Find all employees in a given department, join with roles to display role titles
-
-  // BONUS- Create a query to Find all employees by manager, join with departments and roles to display titles and department names
 }
 
 module.exports = new DB();
